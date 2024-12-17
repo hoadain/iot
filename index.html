@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sense HAT Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        .data-box {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: inline-block;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hiển thị Dữ Liệu Sense HAT</h1>
+    <div class="data-box">
+        <p><strong>Nhiệt độ:</strong> <span id="nhietdo">Đang tải...</span>°C</p>
+        <p><strong>Độ ẩm:</strong> <span id="doam">Đang tải...</span>%</p>
+        <p><strong>Trạng thái Joystick:</strong> <span id="joystick">Đang tải...</span></p>
+    </div>
+
+    <script>
+        // Hàm gọi API và cập nhật dữ liệu
+        function layDuLieu() {
+            fetch("/api/data")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("nhietdo").innerText = data.nhiet_do;
+                    document.getElementById("doam").innerText = data.do_am;
+                    document.getElementById("joystick").innerText = data.joystick.join(", ");
+                });
+        }
+
+        // Tự động cập nhật dữ liệu mỗi 2 giây
+        setInterval(layDuLieu, 2000);
+        layDuLieu();
+    </script>
+</body>
+</html>
